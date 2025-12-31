@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
@@ -26,11 +26,15 @@ import {
   TrendingUp,
   Play,
   Square,
-  AlertTriangle
+  AlertTriangle,
+  Search,
+  Check,
+  X,
+  UserPlus
 } from 'lucide-react';
-import { Button, Input, Badge, Card, Modal, Heading } from '../components/UI';
+import { Button, Input, Badge, Card, Modal, Heading, Label } from '../components/UI';
 import { MOCK_JOBS, MOCK_CLIENTS, MOCK_TEAM } from '../services/mockData';
-import { Job, JobStage, JobType, JobPiece, PieceStatus, JobHistoryEntry } from '../types';
+import { Job, JobStage, JobType, JobPiece, PieceStatus, JobHistoryEntry, TeamMember } from '../types';
 
 export const JobDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,6 +43,11 @@ export const JobDetailsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'briefing' | 'pieces' | 'timeline'>('briefing');
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+
+  // Estados de Atribuição (Assign to UI)
+  const [assigningPieceId, setAssigningPieceId] = useState<string | null>(null);
+  const [assigneeSearch, setAssigneeSearch] = useState('');
+  const [tempAssignees, setTempAssignees] = useState<string[]>([]);
 
   // Estados de Confirmação de Exclusão
   const [isDeleteJobModalOpen, setIsDeleteJobModalOpen] = useState(false);
@@ -185,6 +194,34 @@ export const JobDetailsPage: React.FC = () => {
       });
     }
   };
+
+  // Funções de Atribuição (Assign to)
+  const openAssigneeSelector = (piece: JobPiece) => {
+    setAssigningPieceId(piece.id);
+    setTempAssignees([...piece.assigneeIds]);
+    setAssigneeSearch('');
+  };
+
+  const toggleAssigneeInTemp = (memberId: string) => {
+    if (tempAssignees.includes(memberId)) {
+      setTempAssignees(tempAssignees.filter(id => id !== memberId));
+    } else {
+      setTempAssignees([...tempAssignees, memberId]);
+    }
+  };
+
+  const confirmAssignment = () => {
+    if (job && assigningPieceId) {
+      updatePieceField(assigningPieceId, 'assigneeIds', tempAssignees);
+      setAssigningPieceId(null);
+    }
+  };
+
+  const filteredTeamMembers = useMemo(() => {
+    return MOCK_TEAM.filter(member => 
+      member.name.toLowerCase().includes(assigneeSearch.toLowerCase())
+    );
+  }, [assigneeSearch]);
 
   const progressStats = React.useMemo(() => {
     if (!job || !job.pieces) return { total: 0, completed: 0, percent: 0 };
@@ -346,12 +383,14 @@ export const JobDetailsPage: React.FC = () => {
                   {job.pieces?.map((piece) => {
                     const isTimerRunning = activeTimers[piece.id];
                     const time = timers[piece.id] || 0;
+                    const pieceAssignees = MOCK_TEAM.filter(m => piece.assigneeIds.includes(m.id));
+
                     return (
                       <Card key={piece.id} className="p-0 overflow-hidden border-2 border-gray-100 group relative">
                         <div className="flex flex-col md:flex-row">
                           <div className={`w-3 shrink-0 ${piece.status === PieceStatus.APPROVED ? 'bg-green-500' : piece.status === PieceStatus.REDO ? 'bg-orange-500' : piece.status === PieceStatus.DONE ? 'bg-blue-500' : 'bg-gray-200'}`} />
-                          <div className="p-8 flex-1 bg-white grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                            <div className="md:col-span-2 flex items-center justify-between">
+                          <div className="p-8 flex-1 bg-white grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-8">
+                            <div className="md:col-span-3 flex items-center justify-between">
                                <div className="flex items-center gap-4">
                                   <Badge variant="red" className="scale-110">{piece.status}</Badge>
                                   <input className="text-2xl font-black text-gray-900 uppercase tracking-tight bg-white border-b-2 border-transparent focus:border-primary focus:outline-none" value={piece.name} onChange={(e) => updatePieceField(piece.id, 'name', e.target.value)} />
@@ -366,8 +405,10 @@ export const JobDetailsPage: React.FC = () => {
                                   </button>
                                </div>
                             </div>
-                            <div className="space-y-6">
-                              <div className="grid grid-cols-2 gap-4">
+
+                            {/* CONFIGURAÇÕES: 1/3 do box */}
+                            <div className="space-y-6 md:col-span-1">
+                              <div className="space-y-4">
                                 <div className="space-y-1">
                                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Tipo</label>
                                   <select className="w-full h-11 rounded-xl border-2 border-gray-100 bg-white text-gray-900 px-4 text-xs font-bold focus:border-primary outline-none" value={piece.type} onChange={(e) => updatePieceField(piece.id, 'type', e.target.value)}>
@@ -377,21 +418,41 @@ export const JobDetailsPage: React.FC = () => {
                                 </div>
                                 <Input label="Formato" className="h-11 border-2 border-gray-100 font-bold text-xs bg-white text-gray-900" value={piece.format} onChange={(e) => updatePieceField(piece.id, 'format', e.target.value)} />
                               </div>
-                              <div className="space-y-1">
+                              <div className="space-y-2">
                                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Responsáveis</label>
-                                  <select multiple className="w-full min-h-[80px] rounded-xl border-2 border-gray-100 bg-white text-gray-900 p-3 text-xs font-bold focus:border-primary outline-none" value={piece.assigneeIds} onChange={(e) => updatePieceField(piece.id, 'assigneeIds', Array.from(e.target.selectedOptions).map((opt) => (opt as HTMLOptionElement).value))}>
-                                    {MOCK_TEAM.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-                                  </select>
+                                  <div className="flex items-center gap-2">
+                                     <div className="flex -space-x-2 overflow-hidden">
+                                        {pieceAssignees.map(m => (
+                                          <div key={m.id} className="inline-block h-10 w-10 rounded-full ring-2 ring-white overflow-hidden bg-gray-100" title={m.name}>
+                                            <img src={m.avatar} alt={m.name} className="h-full w-full object-cover" />
+                                          </div>
+                                        ))}
+                                        {pieceAssignees.length === 0 && (
+                                          <div className="inline-block h-10 w-10 rounded-full ring-2 ring-white bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center text-gray-300">
+                                            <User size={16} />
+                                          </div>
+                                        )}
+                                     </div>
+                                     <button 
+                                        onClick={() => openAssigneeSelector(piece)}
+                                        className="h-10 w-10 rounded-full bg-gray-50 border-2 border-dashed border-gray-200 text-gray-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center group"
+                                     >
+                                        <UserPlus size={16} className="group-hover:scale-110 transition-transform" />
+                                     </button>
+                                  </div>
                               </div>
                             </div>
-                            <div className="space-y-6">
+
+                            {/* CONTEÚDO: 2/3 do box */}
+                            <div className="space-y-6 md:col-span-2">
                               <div className="space-y-1">
                                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Conteúdo / Texto</label>
-                                  <textarea className="w-full min-h-[120px] rounded-xl border-2 border-gray-100 bg-white text-gray-900 p-4 text-xs font-medium focus:border-primary outline-none" placeholder="Instruções..." value={piece.content} onChange={(e) => updatePieceField(piece.id, 'content', e.target.value)} />
+                                  <textarea className="w-full min-h-[140px] rounded-xl border-2 border-gray-100 bg-white text-gray-900 p-4 text-xs font-medium focus:border-primary outline-none" placeholder="Insira o texto da peça ou instruções detalhadas..." value={piece.content} onChange={(e) => updatePieceField(piece.id, 'content', e.target.value)} />
                               </div>
-                              <Input label="Link da Arte Final" icon={ExternalLink} className="h-11 border-2 border-gray-100 font-bold text-xs bg-white text-gray-900" placeholder="Link..." value={piece.finalArtLink} onChange={(e) => updatePieceField(piece.id, 'finalArtLink', e.target.value)} />
+                              <Input label="Link da Arte Final" icon={ExternalLink} className="h-11 border-2 border-gray-100 font-bold text-xs bg-white text-gray-900" placeholder="Link para o Dropbox ou Drive..." value={piece.finalArtLink} onChange={(e) => updatePieceField(piece.id, 'finalArtLink', e.target.value)} />
                             </div>
-                            <div className="md:col-span-2 border-t border-gray-50 pt-6 flex items-center justify-between">
+
+                            <div className="md:col-span-3 border-t border-gray-50 pt-6 flex items-center justify-between">
                               <div className="flex gap-2">
                                  <Button variant={piece.status === PieceStatus.DONE ? 'primary' : 'outline'} size="sm" onClick={() => updatePieceStatus(piece.id, PieceStatus.DONE)}><CheckCircle2 size={14} className="mr-2" /> Concluído</Button>
                                  <Button variant={piece.status === PieceStatus.APPROVED ? 'primary' : 'outline'} size="sm" className="border-green-200 text-green-700 hover:bg-green-50" onClick={() => updatePieceStatus(piece.id, PieceStatus.APPROVED)}><CheckCircle2 size={14} className="mr-2" /> Aprovado</Button>
@@ -463,6 +524,74 @@ export const JobDetailsPage: React.FC = () => {
             </Card>
         </aside>
       </div>
+
+      {/* NOVO MODAL: SELETOR DE RESPONSÁVEIS (ASSIGN TO) */}
+      <Modal 
+        isOpen={assigningPieceId !== null} 
+        onClose={() => setAssigningPieceId(null)} 
+        title="Atribuir a"
+        className="max-w-md"
+        footer={
+          <div className="flex w-full gap-4">
+            <Button onClick={confirmAssignment} className="flex-1 h-14 bg-[#007AFF] hover:bg-[#0066CC] shadow-none">Atribuir</Button>
+          </div>
+        }
+      >
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+             <div className="flex -space-x-2">
+                {tempAssignees.map(id => {
+                  const member = MOCK_TEAM.find(m => m.id === id);
+                  return (
+                    <div key={id} className="h-12 w-12 rounded-full ring-4 ring-white overflow-hidden bg-gray-100 shadow-sm border border-gray-100">
+                      <img src={member?.avatar} alt={member?.name} className="h-full w-full object-cover" />
+                    </div>
+                  );
+                })}
+             </div>
+             <button onClick={() => setAssigningPieceId(null)} className="text-sm font-bold text-gray-400 hover:text-gray-600">Cancelar</button>
+          </div>
+
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
+            <input 
+              className="w-full h-12 pl-12 pr-6 rounded-xl border-none bg-gray-50 text-sm font-medium focus:ring-0 placeholder:text-gray-400"
+              placeholder="Encontrar usuários"
+              value={assigneeSearch}
+              onChange={(e) => setAssigneeSearch(e.target.value)}
+            />
+          </div>
+
+          <div className="max-h-72 overflow-y-auto custom-scrollbar -mx-2 px-2">
+            <div className="space-y-1">
+              {filteredTeamMembers.map((member) => {
+                const isSelected = tempAssignees.includes(member.id);
+                return (
+                  <button 
+                    key={member.id}
+                    onClick={() => toggleAssigneeInTemp(member.id)}
+                    className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-100 border border-gray-100">
+                        <img src={member.avatar} alt={member.name} className="h-full w-full object-cover" />
+                      </div>
+                      <span className="text-sm font-bold text-gray-900">{member.name}</span>
+                    </div>
+                    {isSelected && <Check size={20} className="text-[#007AFF]" />}
+                  </button>
+                );
+              })}
+              <button className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-500">
+                <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-200">
+                  <User size={20} />
+                </div>
+                <span className="text-sm font-bold">Não atribuído</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
 
       {/* MODAL CONFIRMAÇÃO EXCLUIR JOB */}
       <Modal 

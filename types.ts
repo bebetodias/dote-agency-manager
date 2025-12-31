@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export enum JobStage {
@@ -147,17 +148,28 @@ export interface Client {
 
 export type TeamRole = 'Designer' | 'Creator' | 'Atendimento' | 'Videomaker' | 'Gestor' | 'Financeiro';
 
+export interface AccessPermissions {
+  dashboard: boolean;
+  clients: boolean;
+  team: boolean;
+  jobs: boolean;
+  financial: boolean;
+  settings: boolean;
+}
+
 export interface TeamMember {
   id: string;
   name: string;
   role: TeamRole;
   status: 'Ativo' | 'Inativo' | 'Férias';
   email: string;
+  password?: string;
   avatar?: string;
   phone?: string;
   joinedDate?: string;
   bio?: string;
   skills?: string[];
+  permissions?: AccessPermissions;
 }
 
 export interface Job {
