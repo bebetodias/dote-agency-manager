@@ -500,7 +500,7 @@ export const JobDetailsPage: React.FC = () => {
                 <div className="space-y-8">
                   <div className="space-y-1">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Status</label>
-                      <select className="w-full h-12 rounded-xl border-2 border-gray-100 bg-white text-gray-900 px-4 text-xs font-black uppercase tracking-tight focus:border-primary outline-none" value={job.stage} onChange={(e) => setJob({...job, stage: e.target.value as JobStage})}>
+                      <select className="w-full h-12 rounded-xl border-2 border-gray-100 bg-white text-gray-900 px-4 text-xs font-black tracking-tight focus:border-primary outline-none" value={job.stage} onChange={(e) => setJob({...job, stage: e.target.value as JobStage})}>
                           {Object.values(JobStage).map(stage => <option key={stage} value={stage}>{stage}</option>)}
                       </select>
                   </div>
