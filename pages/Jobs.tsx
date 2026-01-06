@@ -25,7 +25,7 @@ type ViewMode = 'my-jobs' | 'by-stage' | 'by-assignee' | 'timeline';
 
 export const JobsPage: React.FC = () => {
   const navigate = useNavigate();
-  const [viewMode, setViewMode] = useState<ViewMode>('by-stage');
+  const [viewMode, setViewMode] = useState<ViewMode>('my-jobs');
   const [jobs, setJobs] = useState<Job[]>(MOCK_JOBS);
   const [isNewJobOpen, setIsNewJobOpen] = useState(false);
   const [clientSearch, setClientSearch] = useState('');
