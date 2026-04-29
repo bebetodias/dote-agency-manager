@@ -1,5 +1,5 @@
 
-import { Client, ClientPlan, Job, JobStage, JobType, TeamMember, CommemorativeDate, PieceStatus, AccessPermissions } from '../types';
+import { Client, ClientPlan, Job, JobStage, JobType, TeamMember, CommemorativeDate, PieceStatus, AccessPermissions, Production } from '../types';
 
 export const DEFAULT_PERMISSIONS: Record<string, AccessPermissions> = {
   'Gestor': { dashboard: true, clients: true, team: true, jobs: true, financial: true, settings: true },
@@ -145,7 +145,23 @@ export const MOCK_CLIENTS: Client[] = [
       notes: 'Usar degradês suaves entre o primário e branco.'
     }
   },
-  { id: '2', name: 'Boutique Flora', plan: ClientPlan.JOB, status: 'Ativo', lastInteraction: 'Ontem', email: 'flora@boutique.com', phone: '(11) 98888-8888', contacts: [], personas: [], tone: { casualFormal: 50, friendlyProfessional: 50, funnySerious: 50, accessibleExclusive: 50, modernClassic: 50, softImposing: 50 }, socialHistory: [], colors: { primary: { hex: '#E11D48', cmyk: '0, 90, 60, 0', pantone: '199 C' }, secondary: { hex: '#FFF1F2', cmyk: '0, 2, 1, 0', pantone: '705 C' } } },
+  { 
+    id: '2', 
+    name: 'Boutique Flora', 
+    plan: ClientPlan.JOB, 
+    status: 'Ativo', 
+    lastInteraction: 'Ontem', 
+    email: 'flora@boutique.com', 
+    phone: '(11) 98888-8888', 
+    contacts: [], 
+    personas: [], 
+    tone: { casualFormal: 50, friendlyProfessional: 50, funnySerious: 50, accessibleExclusive: 50, modernClassic: 50, softImposing: 50 }, 
+    socialHistory: [], 
+    colors: { 
+      primary: { hex: '#E11D48', cmyk: '0, 90, 60, 0', pantone: '199 C' }, 
+      secondary: { hex: '#FFF1F2', cmyk: '0, 2, 1, 0', pantone: '705 C' } 
+    } 
+  },
 ];
 
 export const MOCK_DATES: CommemorativeDate[] = [
@@ -157,7 +173,7 @@ export const MOCK_DATES: CommemorativeDate[] = [
 
 export const MOCK_JOBS: Job[] = [
   { 
-    id: 'JOB-101', 
+    id: 'D-101', 
     title: 'Campanha Black Friday', 
     clientId: '1', 
     clientName: 'TechSolutions Inc.', 
@@ -183,15 +199,60 @@ export const MOCK_JOBS: Job[] = [
     ]
   },
   { 
-    id: 'JOB-102', 
+    id: 'D-102', 
     title: 'Novo Logo Floral', 
     clientId: '2', 
     clientName: 'Boutique Flora', 
     type: JobType.OFFLINE, 
     stage: JobStage.BRIEFING, 
     assigneeId: '1', 
-    deadline: '2023-12-15',
+    deadline: '2026-02-15',
     pieces: [],
     history: []
   },
+  { 
+    id: 'JOB-103', 
+    title: 'Natal', 
+    clientId: '1', 
+    clientName: 'TechSolutions Inc.', 
+    type: JobType.OFFLINE, 
+    stage: JobStage.BRIEFING, 
+    assigneeId: '1', 
+    deadline: '2026-1-8',
+    pieces: [],
+    history: []
+  },
+];
+
+export const MOCK_PRODUCTIONS: Production[] = [
+  {
+    id: 'PROD-001',
+    name: 'Shoot Institucional TechSolutions',
+    location: 'Sede TechSolutions - Av. Paulista',
+    date: '2024-12-10',
+    startTime: '09:00',
+    endTime: '17:00',
+    involvedMemberIds: ['1', '2'],
+    equipment: [
+      { id: 'eq1', name: 'Sony A7IV', checked: true },
+      { id: 'eq2', name: 'Kit Iluminação Led', checked: true },
+      { id: 'eq3', name: 'Microfone Rode Wireless', checked: false }
+    ],
+    status: 'Confirmada'
+  },
+  {
+    id: 'PROD-002',
+    name: 'Campanha de Verão Boutique Flora',
+    location: 'Parque do Ibirapuera',
+    date: '2024-12-15',
+    startTime: '06:00',
+    endTime: '11:00',
+    involvedMemberIds: ['2', '3'],
+    equipment: [
+      { id: 'eq4', name: 'Canon R5', checked: true },
+      { id: 'eq5', name: 'Rebatedores', checked: true },
+      { id: 'eq6', name: 'Drone DJI Mini 3', checked: false }
+    ],
+    status: 'Em Planejamento'
+  }
 ];

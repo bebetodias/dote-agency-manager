@@ -37,11 +37,11 @@ export const LoginPage: React.FC = () => {
         {/* Hero Content Principal */}
         <div className="flex flex-col justify-center flex-grow py-12 lg:py-0">
           <div className="max-w-xl animate-in fade-in slide-in-from-left duration-1000">
-            <h2 className="text-[#1b0e0e] tracking-tight text-5xl md:text-7xl font-black leading-[1] mb-10">
+            <h2 className="text-[#1b0e0e] tracking-tight text-3xl md:text-5xl font-black leading-[1] mb-10">
               O que é preciso fazer. <span className="text-[#DC2626]">Bem-feito.</span>
             </h2>
             <div className="border-l-[6px] border-[#DC2626] pl-8">
-              <p className="text-gray-500 text-xl md:text-2xl font-semibold leading-relaxed max-w-md opacity-80">
+              <p className="text-gray-500 text-md md:text-xl font-semibold leading-relaxed max-w-md opacity-80">
                 Agência de Branding, Design e Estratégia. Transformando ideias em marcas memoráveis.
               </p>
             </div>
@@ -49,7 +49,7 @@ export const LoginPage: React.FC = () => {
         </div>
 
         {/* Rodapé Institucional */}
-        <div className="text-sm font-bold text-gray-400 uppercase tracking-[0.2em] animate-in fade-in duration-700">
+        <div className="text-sm font-medium text-gray-400 tracking-[0.2em] animate-in fade-in duration-700">
           © 2024 Dote Agency. All rights reserved.
         </div>
 
@@ -62,15 +62,15 @@ export const LoginPage: React.FC = () => {
         <div className="w-full max-w-[440px] animate-in fade-in slide-in-from-bottom-6 duration-700">
           {/* Cabeçalho do Formulário */}
           <div className="mb-14">
-            <h3 className="text-[#1b0e0e] text-4xl md:text-5xl font-black leading-tight tracking-tighter mb-4 uppercase">Acesse sua conta</h3>
-            <p className="text-gray-400 font-bold text-lg tracking-tight">Bem-vindo de volta! Por favor, insira seus dados.</p>
+            <h3 className="text-[#1b0e0e] text-xl md:text-2xl font-black leading-tight tracking-tighter mb-4 uppercase">Acesse sua conta</h3>
+            <p className="text-gray-400 font-medium text-lg tracking-tight">Bem-vindo de volta! Por favor, insira seus dados.</p>
           </div>
 
           {/* Formulário de Login */}
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Campo Email */}
             <div className="space-y-3">
-              <label className="block text-[#1b0e0e] text-xs font-black uppercase tracking-[0.15em]" htmlFor="email">
+              <label className="block text-[#1b0e0e] text-xs font-medium uppercase tracking-[0.15em]" htmlFor="email">
                 Email
               </label>
               <div className="relative group">
@@ -92,10 +92,10 @@ export const LoginPage: React.FC = () => {
             {/* Campo Senha */}
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <label className="block text-[#1b0e0e] text-xs font-black uppercase tracking-[0.15em]" htmlFor="password">
+                <label className="block text-[#1b0e0e] text-xs font-medium uppercase tracking-[0.15em]" htmlFor="password">
                   Senha
                 </label>
-                <button type="button" className="text-[10px] font-black text-[#DC2626] uppercase tracking-widest hover:underline transition-all">
+                <button type="button" className="text-[10px] font-medium text-[#DC2626] uppercase tracking-widest hover:underline transition-all">
                   Esqueceu a senha?
                 </button>
               </div>
@@ -134,11 +134,11 @@ export const LoginPage: React.FC = () => {
 
           {/* Rodapé do Formulário */}
           <div className="mt-14 text-center">
-            <p className="text-gray-400 text-xs font-bold uppercase tracking-widest">
+            <p className="text-gray-400 text-xs font-medium tracking-widest">
               Não tem uma conta?{' '}
               <button 
                 onClick={() => navigate('/landing')}
-                className="font-black text-[#1b0e0e] hover:text-[#DC2626] transition-colors border-b-2 border-transparent hover:border-[#DC2626]"
+                className="font-bold text-[#1b0e0e] hover:text-[#DC2626] transition-colors border-b-2 border-transparent hover:border-[#DC2626]"
               >
                 Cadastre-se
               </button>

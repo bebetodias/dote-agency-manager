@@ -201,3 +201,21 @@ export interface StatCardProps {
   icon: React.ElementType;
   trend?: string;
 }
+
+export interface Equipment {
+  id: string;
+  name: string;
+  checked: boolean;
+}
+
+export interface Production {
+  id: string;
+  name: string;
+  location: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  involvedMemberIds: string[];
+  equipment: Equipment[];
+  status: 'Confirmada' | 'Em Planejamento' | 'Concluída' | 'Cancelada';
+}

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
@@ -80,16 +81,16 @@ export const ClientDetailsPage: React.FC = () => {
             
             <div className="flex-1 text-center md:text-left space-y-3">
                 <div className="flex items-center justify-center md:justify-start gap-3 flex-wrap">
-                    <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase">{client.name}</h1>
+                    <h1 className="text-4xl font-bold text-gray-900 tracking-tighter">{client.name}</h1>
                     <Badge variant={client.status === 'Ativo' ? 'default' : 'outline'}>{client.status}</Badge>
                     <Badge variant="red">{client.plan}</Badge>
                 </div>
-                <p className="text-gray-500 max-w-2xl text-lg italic">"{client.brandConcept || 'Defina o conceito da marca na aba História.'}"</p>
+                <p className="text-gray-500 max-w-2xl text-lg italic font-medium">"{client.brandConcept || 'Defina o conceito da marca na aba História.'}"</p>
                 
                 <div className="flex flex-wrap justify-center md:justify-start gap-6 pt-2">
-                    <div className="flex items-center gap-2 text-sm text-gray-600 font-bold"><Globe2 size={16} className="text-primary"/> {client.website}</div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600 font-bold"><Mail size={16} className="text-primary"/> {client.email}</div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600 font-bold"><Phone size={16} className="text-primary"/> {client.phone}</div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 font-semibold"><Globe2 size={16} className="text-primary"/> {client.website}</div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 font-semibold"><Mail size={16} className="text-primary"/> {client.email}</div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 font-semibold"><Phone size={16} className="text-primary"/> {client.phone}</div>
                 </div>
             </div>
 
@@ -107,7 +108,7 @@ export const ClientDetailsPage: React.FC = () => {
                     <button 
                         key={item.id}
                         onClick={() => setActiveTab(item.id)}
-                        className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeTab === item.id ? 'bg-primary text-white shadow-xl shadow-red-900/20 translate-x-1' : 'text-gray-400 hover:bg-gray-50 hover:text-gray-900'}`}
+                        className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${activeTab === item.id ? 'bg-primary text-white shadow-xl shadow-red-500/10 translate-x-1' : 'text-gray-400 hover:bg-gray-50 hover:text-gray-900'}`}
                     >
                         <item.icon size={18} />
                         {item.label}
@@ -135,11 +136,11 @@ export const ClientDetailsPage: React.FC = () => {
 const SectionHeader = ({ title, subtitle, onEdit }: { title: string, subtitle?: string, onEdit?: () => void }) => (
     <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-5">
         <div className="space-y-1">
-            <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">{title}</h2>
-            {subtitle && <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">{subtitle}</p>}
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">{title}</h2>
+            {subtitle && <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">{subtitle}</p>}
         </div>
         {onEdit && (
-            <Button variant="outline" size="sm" onClick={onEdit} className="gap-2 border-gray-200 font-black uppercase text-[10px] tracking-widest">
+            <Button variant="outline" size="sm" onClick={onEdit} className="gap-2 border-gray-200 font-bold uppercase text-[10px] tracking-widest">
                 <Edit3 size={14} /> Editar
             </Button>
         )}
@@ -148,8 +149,8 @@ const SectionHeader = ({ title, subtitle, onEdit }: { title: string, subtitle?: 
 
 const StaticField = ({ label, value, icon: Icon }: { label: string, value?: string, icon?: React.ElementType }) => (
     <div className="space-y-1.5">
-        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">{label}</label>
-        <div className="flex items-center gap-2.5 text-sm font-bold text-gray-900">
+        <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block">{label}</label>
+        <div className="flex items-center gap-2.5 text-sm font-semibold text-gray-800">
             {Icon && <Icon size={14} className="text-primary shrink-0" />}
             <span className="truncate">{value || '---'}</span>
         </div>
@@ -201,16 +202,16 @@ const DataSection = ({ client, setClient }: { client: Client, setClient: (c: Cli
         <Card className="p-8">
             <div className="flex items-center justify-between mb-8">
                 <div className="space-y-1 border-l-4 border-primary pl-5">
-                    <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Principais Contatos</h2>
-                    <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Pontos focais do projeto</p>
+                    <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Principais Contatos</h2>
+                    <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">Pontos focais do projeto</p>
                 </div>
-                <Button size="sm" variant="outline" className="gap-2 border-gray-200 uppercase text-[10px] tracking-widest font-black">
+                <Button size="sm" variant="outline" className="gap-2 border-gray-200 uppercase text-[10px] tracking-widest font-bold">
                     <Plus size={14}/> Novo
                 </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {client.contacts.map((contact) => (
-                    <div key={contact.id} className="group relative border border-gray-100 rounded-2xl p-6 flex gap-6 bg-gray-50/50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all">
+                    <div key={contact.id} className="group relative border border-gray-100 rounded-2xl p-6 flex gap-6 bg-gray-50/50 hover:bg-white hover:shadow-xl transition-all">
                         <button className="absolute top-4 right-4 text-gray-300 hover:text-primary transition-colors">
                             <Edit3 size={16} />
                         </button>
@@ -218,11 +219,11 @@ const DataSection = ({ client, setClient }: { client: Client, setClient: (c: Cli
                             {contact.avatar ? <img src={contact.avatar} className="w-full h-full object-cover" /> : <User size={24} className="text-gray-300" />}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h4 className="font-black text-gray-900 text-lg uppercase tracking-tight">{contact.name}</h4>
-                            <p className="text-[10px] text-primary font-black uppercase tracking-widest mb-3">{contact.role}</p>
+                            <h4 className="font-bold text-gray-800 text-lg">{contact.name}</h4>
+                            <p className="text-[10px] text-primary font-bold uppercase tracking-widest mb-3">{contact.role}</p>
                             <div className="space-y-1.5">
-                                <div className="flex items-center gap-2 text-xs font-bold text-gray-600"><Mail size={12} className="text-gray-400"/> {contact.corpEmail}</div>
-                                <div className="flex items-center gap-2 text-xs font-bold text-gray-600"><Phone size={12} className="text-gray-400"/> {contact.whatsapp}</div>
+                                <div className="flex items-center gap-2 text-xs font-semibold text-gray-600"><Mail size={12} className="text-gray-400"/> {contact.corpEmail}</div>
+                                <div className="flex items-center gap-2 text-xs font-semibold text-gray-600"><Phone size={12} className="text-gray-400"/> {contact.whatsapp}</div>
                             </div>
                         </div>
                     </div>
@@ -230,7 +231,6 @@ const DataSection = ({ client, setClient }: { client: Client, setClient: (c: Cli
             </div>
         </Card>
 
-        {/* MODAIS DADOS BÁSICOS */}
         <Modal 
           isOpen={modalType !== null} 
           onClose={() => setModalType(null)} 
@@ -285,32 +285,28 @@ const HistorySection = ({ client, setClient }: { client: Client, setClient: (c: 
                     <div className="space-y-8">
                         <StaticField label="Data de Fundação" value={client.foundingDate} icon={CalendarIcon} />
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Fundador e Origem</label>
-                            <p className="text-sm font-bold text-gray-900 leading-relaxed">{client.founderStory}</p>
+                            <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block">Fundador e Origem</label>
+                            <p className="text-sm font-semibold text-gray-700 leading-relaxed">{client.founderStory}</p>
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Evolução e Marcos</label>
-                            <p className="text-sm font-bold text-gray-900 leading-relaxed">{client.evolution}</p>
+                            <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block">Evolução e Marcos</label>
+                            <p className="text-sm font-semibold text-gray-700 leading-relaxed">{client.evolution}</p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <StaticField label="Missão" value={client.mission} />
                             <StaticField label="Visão" value={client.vision} />
                         </div>
-                        <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Valores</label>
-                            <p className="text-sm font-bold text-gray-900 leading-relaxed">{client.values}</p>
-                        </div>
                     </div>
                     <div className="space-y-8">
                         <StaticField label="Mensagem Central" value={client.centralMessage} icon={Target} />
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Conceito da Marca</label>
-                            <p className="text-lg font-black text-gray-900 italic tracking-tight">"{client.brandConcept}"</p>
+                            <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block">Conceito da Marca</label>
+                            <p className="text-lg font-bold text-gray-800 italic tracking-tight">"{client.brandConcept}"</p>
                         </div>
                         <StaticField label="Linguagem Sugerida" value={client.language} />
                         <StaticField label="O que evitar" value={client.whatToAvoid} />
                         <div className="space-y-2 pt-4">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Palavras Chave</label>
+                            <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block">Palavras Chave</label>
                             <div className="flex flex-wrap gap-2">
                                 {client.keywords?.map(k => <Badge key={k} variant="red">{k}</Badge>)}
                             </div>
@@ -327,7 +323,6 @@ const HistorySection = ({ client, setClient }: { client: Client, setClient: (c: 
                         <Input label="Evolução e Marcos" multiline value={tempData.evolution} onChange={e => setTempData({...tempData, evolution: e.target.value})} />
                         <Input label="Missão" value={tempData.mission} onChange={e => setTempData({...tempData, mission: e.target.value})} />
                         <Input label="Visão" value={tempData.vision} onChange={e => setTempData({...tempData, vision: e.target.value})} />
-                        <Input label="Valores" multiline value={tempData.values} onChange={e => setTempData({...tempData, values: e.target.value})} />
                     </div>
                     <div className="space-y-4">
                         <Input label="Mensagem Central" icon={Target} value={tempData.centralMessage} onChange={e => setTempData({...tempData, centralMessage: e.target.value})} />
@@ -343,7 +338,6 @@ const HistorySection = ({ client, setClient }: { client: Client, setClient: (c: 
 
 const PersonaSection = ({ client, setClient }: { client: Client, setClient: (c: Client) => void }) => {
     const [editingPersona, setEditingPersona] = useState<ClientPersona | null>(null);
-    const [isAddOpen, setIsAddOpen] = useState(false);
 
     const handleEdit = (persona: ClientPersona) => {
         setEditingPersona({ ...persona });
@@ -363,11 +357,11 @@ const PersonaSection = ({ client, setClient }: { client: Client, setClient: (c: 
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="flex items-center justify-between">
                 <SectionHeader title="Personas" subtitle="Perfil do público ideal" />
-                <Button className="gap-2 uppercase text-[10px] font-black tracking-widest"><Plus size={16}/> Nova Persona</Button>
+                <Button className="gap-2 uppercase text-[10px] font-bold tracking-widest"><Plus size={16}/> Nova Persona</Button>
             </div>
             <div className="grid grid-cols-1 gap-10">
                 {client.personas.map((persona) => (
-                    <Card key={persona.id} className="overflow-hidden border-2 border-gray-100 group relative">
+                    <Card key={persona.id} className="overflow-hidden border border-gray-100 group relative">
                         <button onClick={() => handleEdit(persona)} className="absolute top-6 right-6 z-10 p-2 bg-white rounded-full shadow-lg text-gray-300 hover:text-primary opacity-0 group-hover:opacity-100 transition-all">
                             <Edit3 size={18} />
                         </button>
@@ -375,7 +369,7 @@ const PersonaSection = ({ client, setClient }: { client: Client, setClient: (c: 
                             <div className="w-full md:w-[220px] bg-gray-100 flex flex-col shrink-0">
                                 <img src={persona.photo} alt={persona.name} className="w-full aspect-square object-cover" />
                                 <div className="p-4 bg-gray-900 text-white text-center">
-                                    <h3 className="font-black uppercase tracking-tighter text-xl">{persona.name}</h3>
+                                    <h3 className="font-bold uppercase tracking-tight text-xl">{persona.name}</h3>
                                     <Badge variant="red" className="mt-1">Persona Foco</Badge>
                                 </div>
                             </div>
@@ -383,8 +377,8 @@ const PersonaSection = ({ client, setClient }: { client: Client, setClient: (c: 
                                 <StaticField label="Origem / Onde Cresceu" value={persona.origin} />
                                 <StaticField label="Situação Familiar" value={persona.familyStatus} />
                                 <div className="md:col-span-2 space-y-1.5 border-t border-gray-50 pt-6">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-widest block">Rotina e Estilo de Vida</label>
-                                    <p className="text-sm font-bold text-gray-900 leading-relaxed">{persona.routine} {persona.lifestyle}</p>
+                                    <label className="text-[10px] font-semibold text-primary uppercase tracking-widest block">Rotina e Estilo de Vida</label>
+                                    <p className="text-sm font-semibold text-gray-700 leading-relaxed">{persona.routine} {persona.lifestyle}</p>
                                 </div>
                                 <StaticField label="Frequência de Compra" value={persona.purchaseFrequency} />
                                 <StaticField label="Onde Compra" value={persona.wherePurchases} />
@@ -419,10 +413,64 @@ const PersonaSection = ({ client, setClient }: { client: Client, setClient: (c: 
     );
 };
 
-const ToneSection = ({ client, setClient }: { client: Client, setClient: (c: Client) => void }) => {
-    const [isEditOpen, setIsEditOpen] = useState(false);
-    const [tempTone, setTempTone] = useState<any>(null);
+const ToneSlider = ({ axis, value, onChange }: { axis: { key: string, left: string, right: string }, value: number, onChange: (val: number) => void }) => {
+    // A lógica solicitada: Centro é 0%, Pontas são 100%.
+    // No estado (0-100), 50 é o centro.
+    const displayValue = Math.abs(value - 50) * 2;
+    
+    return (
+        <div className="space-y-4 py-4 select-none">
+            <div className="flex justify-between items-center mb-1">
+                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{axis.left}</span>
+                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{axis.right}</span>
+            </div>
+            
+            <div className="relative h-12 flex flex-col justify-center">
+                {/* Trilha do Slider */}
+                <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-[2px] bg-gray-100 rounded-full" />
+                
+                {/* O Slider Real */}
+                <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    value={value} 
+                    onChange={(e) => onChange(parseInt(e.target.value))}
+                    className="absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer z-20 opacity-0"
+                />
 
+                {/* Marcadores de Base */}
+                <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between px-0.5">
+                    <div className="w-[10px] h-[10px] rounded-full bg-gray-100 border border-gray-200" />
+                    <div className="w-[10px] h-[10px] rounded-full bg-gray-100 border border-gray-200" />
+                    <div className="w-[10px] h-[10px] rounded-full bg-gray-100 border border-gray-200" />
+                </div>
+
+                {/* Thumb Visual Customizado */}
+                <div 
+                    className="absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white border-2 border-gray-200 shadow-md flex items-center justify-center pointer-events-none z-10"
+                    style={{ left: `calc(${value}% - 16px)` }}
+                >
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
+                    
+                    {/* Valor em Vermelho abaixo do Seletor */}
+                    <div className="absolute top-10 whitespace-nowrap text-[11px] font-bold text-primary">
+                        {displayValue}%
+                    </div>
+                </div>
+            </div>
+
+            {/* Legenda de Escala Inferior */}
+            <div className="flex justify-between px-0.5 pt-1 text-[8px] font-bold text-gray-300 uppercase tracking-tighter">
+                <span>100%</span>
+                <span>0%</span>
+                <span>100%</span>
+            </div>
+        </div>
+    );
+}
+
+const ToneSection = ({ client, setClient }: { client: Client, setClient: (c: Client) => void }) => {
     const axes = [
         { key: 'casualFormal', left: 'Casual', right: 'Formal' },
         { key: 'friendlyProfessional', left: 'Amigável', right: 'Profissional' },
@@ -432,52 +480,28 @@ const ToneSection = ({ client, setClient }: { client: Client, setClient: (c: Cli
         { key: 'softImposing', left: 'Suave', right: 'Imponente' },
     ];
 
-    const handleEdit = () => {
-        setTempTone({ ...client.tone });
-        setIsEditOpen(true);
-    };
-
-    const handleSave = () => {
-        setClient({ ...client, tone: tempTone });
-        setIsEditOpen(false);
+    const updateTone = (key: string, val: number) => {
+        setClient({
+            ...client,
+            tone: { ...client.tone, [key]: val }
+        });
     };
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <Card className="p-8">
-                <SectionHeader title="Tom de Voz" subtitle="Diretrizes de comunicação verbal" onEdit={handleEdit} />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
-                    {axes.map(axis => {
-                        const val = client.tone[axis.key as keyof typeof client.tone];
-                        return (
-                            <div key={axis.key} className="p-5 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-between">
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{axis.left} / {axis.right}</label>
-                                    <p className="text-sm font-black text-gray-900 uppercase tracking-tight">
-                                        {val < 40 ? axis.left : val > 60 ? axis.right : 'Equilibrado'}
-                                    </p>
-                                </div>
-                                <div className="text-2xl font-black text-primary">{val}%</div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </Card>
-
-            <Modal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} title="Editar Intensidade do Tom" footer={<Button onClick={handleSave}>Salvar Voz</Button>}>
-                <div className="space-y-8 py-4">
+                <SectionHeader title="Tom de Voz" subtitle="Diretrizes de comunicação verbal" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12 mt-10">
                     {axes.map(axis => (
-                        <div key={axis.key} className="space-y-3">
-                            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-500">
-                                <span>{axis.left}</span>
-                                <span>{axis.right}</span>
-                            </div>
-                            <input type="range" className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-primary" value={tempTone?.[axis.key]} onChange={e => setTempTone({...tempTone, [axis.key]: parseInt(e.target.value)})} />
-                            <div className="text-center font-black text-xs text-primary">{tempTone?.[axis.key]}%</div>
-                        </div>
+                        <ToneSlider 
+                            key={axis.key} 
+                            axis={axis} 
+                            value={client.tone[axis.key as keyof typeof client.tone]} 
+                            onChange={(val) => updateTone(axis.key, val)}
+                        />
                     ))}
                 </div>
-            </Modal>
+            </Card>
         </div>
     );
 };
@@ -499,16 +523,16 @@ const SocialSection = ({ client, setClient }: { client: Client, setClient: (c: C
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <SectionHeader title="Performance Social" subtitle="Métricas comparativas e evolução" />
             {client.socialHistory.map((metric) => (
-                <Card key={metric.id} className="overflow-hidden border-2 border-gray-100 group relative">
+                <Card key={metric.id} className="overflow-hidden border border-gray-100 group relative">
                     <button onClick={() => setEditingMetric({ ...metric })} className="absolute top-6 right-6 z-10 p-2 bg-white rounded-full shadow-lg text-gray-300 hover:text-primary opacity-0 group-hover:opacity-100 transition-all">
                         <Edit3 size={18} />
                     </button>
                     <div className="bg-gray-900 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
                         <div className="flex items-center gap-5">
-                            <div className="p-4 bg-primary rounded-2xl shadow-xl shadow-red-900/40 text-white"><Share2 size={28}/></div>
+                            <div className="p-4 bg-primary rounded-2xl shadow-xl shadow-red-500/10 text-white"><Share2 size={28}/></div>
                             <div>
-                                <h4 className="text-2xl font-black text-white uppercase tracking-tighter">{metric.platform} - {metric.profileName}</h4>
-                                <a href={metric.profileLink} target="_blank" className="text-xs text-primary font-black uppercase tracking-widest hover:underline">{metric.profileLink}</a>
+                                <h4 className="text-2xl font-bold text-white tracking-tight">{metric.platform} - {metric.profileName}</h4>
+                                <a href={metric.profileLink} target="_blank" className="text-xs text-primary font-bold uppercase tracking-widest hover:underline">{metric.profileLink}</a>
                             </div>
                         </div>
                         <Badge variant="red" className="scale-125">Ativo</Badge>
@@ -525,10 +549,10 @@ const SocialSection = ({ client, setClient }: { client: Client, setClient: (c: C
                             const isPos = parseFloat(growth) >= 0;
                             return (
                                 <div key={st.label} className="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col items-center text-center">
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">{st.label}</span>
+                                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-4">{st.label}</span>
                                     <div className="space-y-1">
                                         <div className="text-[10px] text-gray-400 font-bold">Início: {st.entry}{st.unit}</div>
-                                        <div className="text-2xl font-black text-gray-900">{st.current}{st.unit}</div>
+                                        <div className="text-2xl font-bold text-gray-900">{st.current}{st.unit}</div>
                                         <Badge variant={isPos ? 'outline' : 'red'} className={`mt-2 ${isPos ? 'text-green-600 bg-green-50' : ''}`}>
                                             {isPos ? '↑' : '↓'} {growth}%
                                         </Badge>
@@ -546,8 +570,6 @@ const SocialSection = ({ client, setClient }: { client: Client, setClient: (c: C
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Input label="Seguidores Entrada" type="number" value={editingMetric.followersEntry} onChange={e => setEditingMetric({...editingMetric, followersEntry: parseInt(e.target.value)})} />
                             <Input label="Seguidores Atual" type="number" value={editingMetric.followersCurrent} onChange={e => setEditingMetric({...editingMetric, followersCurrent: parseInt(e.target.value)})} />
-                            <Input label="Alcance Entrada" type="number" value={editingMetric.reachEntry} onChange={e => setEditingMetric({...editingMetric, reachEntry: parseInt(e.target.value)})} />
-                            <Input label="Alcance Atual" type="number" value={editingMetric.reachCurrent} onChange={e => setEditingMetric({...editingMetric, reachCurrent: parseInt(e.target.value)})} />
                         </div>
                         <Input label="Engajamento Atual (%)" type="number" step="0.1" value={editingMetric.engagementCurrent} onChange={e => setEditingMetric({...editingMetric, engagementCurrent: parseFloat(e.target.value)})} />
                     </div>
@@ -569,9 +591,9 @@ const CalendarSection = ({ client }: { client: Client }) => {
                 {months.map((m, idx) => {
                     const monthDates = dates.filter(d => d.month === idx);
                     return (
-                        <div key={m} className="border-2 border-gray-50 rounded-2xl p-6 bg-gray-50/50 hover:bg-white hover:shadow-2xl hover:shadow-gray-200/50 transition-all min-h-[180px]">
+                        <div key={m} className="border border-gray-100 rounded-2xl p-6 bg-gray-50/50 hover:bg-white transition-all min-h-[180px]">
                             <div className="flex items-center justify-between mb-5 border-b border-gray-100 pb-3">
-                                <span className="font-black text-gray-900 uppercase tracking-tighter text-2xl">{m}</span>
+                                <span className="font-bold text-gray-900 text-xl">{m}</span>
                                 <Plus size={16} className="text-gray-300 hover:text-primary cursor-pointer transition-colors" />
                             </div>
                             <div className="space-y-3">
@@ -579,12 +601,11 @@ const CalendarSection = ({ client }: { client: Client }) => {
                                     <div key={d.id} className={`p-3 rounded-xl text-[10px] font-bold border-l-4 shadow-sm bg-white ${d.clientId ? 'border-orange-500 text-orange-700' : 'border-red-500 text-red-700'}`}>
                                         <div className="flex justify-between items-center mb-1">
                                             <span className="opacity-60 uppercase">{d.day}/{idx+1}</span>
-                                            {d.clientId && <Badge variant="outline" className="scale-75 origin-right">Brand</Badge>}
                                         </div>
                                         <div className="truncate uppercase tracking-tight">{d.name}</div>
                                     </div>
                                 ))}
-                                {monthDates.length === 0 && <span className="text-[10px] text-gray-300 italic font-bold uppercase">Sem eventos</span>}
+                                {monthDates.length === 0 && <span className="text-[10px] text-gray-300 italic font-semibold uppercase">Vazio</span>}
                             </div>
                         </div>
                     );
@@ -628,9 +649,9 @@ const PaletteSection = ({ client, setClient }: { client: Client, setClient: (c: 
                         { label: 'Cor Secundária', data: client.colors.secondary }
                     ].map(color => (
                         <div key={color.label} className="flex items-center gap-10">
-                            <div className="w-32 h-32 rounded-[2.5rem] shadow-2xl border-4 border-white ring-1 ring-gray-100 shrink-0" style={{ backgroundColor: color.data.hex }} />
+                            <div className="w-28 h-28 rounded-[2rem] shadow-xl border-4 border-white ring-1 ring-gray-100 shrink-0" style={{ backgroundColor: color.data.hex }} />
                             <div className="flex-1 space-y-4">
-                                <h4 className="font-black text-gray-900 uppercase text-xs tracking-widest">{color.label}</h4>
+                                <h4 className="font-bold text-gray-900 uppercase text-xs tracking-widest">{color.label}</h4>
                                 <div className="space-y-2">
                                     <StaticField label="HEX" value={color.data.hex} />
                                     <StaticField label="CMYK" value={color.data.cmyk} />
@@ -640,8 +661,8 @@ const PaletteSection = ({ client, setClient }: { client: Client, setClient: (c: 
                         </div>
                     ))}
                     <div className="md:col-span-2 space-y-3 border-t border-gray-100 pt-10">
-                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Observações de Identidade</label>
-                        <p className="text-sm font-bold text-gray-600 leading-relaxed italic">"{client.colors.notes || 'Nenhuma observação técnica cadastrada.'}"</p>
+                        <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block">Observações de Identidade</label>
+                        <p className="text-sm font-semibold text-gray-600 leading-relaxed italic">"{client.colors.notes || 'Sem observações.'}"</p>
                     </div>
                 </div>
             </Card>
@@ -650,19 +671,11 @@ const PaletteSection = ({ client, setClient }: { client: Client, setClient: (c: 
                 {tempColors && (
                     <div className="space-y-8">
                         <div className="space-y-4">
-                            <h4 className="text-xs font-black uppercase text-gray-900 tracking-widest border-b pb-2">Cor Primária</h4>
+                            <h4 className="text-xs font-bold uppercase text-gray-900 tracking-widest border-b pb-2">Cor Primária</h4>
                             <div className="grid grid-cols-3 gap-3">
                                 <Input label="HEX" value={tempColors.primary.hex} onChange={e => setTempColors({...tempColors, primary: {...tempColors.primary, hex: e.target.value}})} />
                                 <Input label="CMYK" value={tempColors.primary.cmyk} onChange={e => setTempColors({...tempColors, primary: {...tempColors.primary, cmyk: e.target.value}})} />
                                 <Input label="PANTONE" value={tempColors.primary.pantone} onChange={e => setTempColors({...tempColors, primary: {...tempColors.primary, pantone: e.target.value}})} />
-                            </div>
-                        </div>
-                        <div className="space-y-4">
-                            <h4 className="text-xs font-black uppercase text-gray-900 tracking-widest border-b pb-2">Cor Secundária</h4>
-                            <div className="grid grid-cols-3 gap-3">
-                                <Input label="HEX" value={tempColors.secondary.hex} onChange={e => setTempColors({...tempColors, secondary: {...tempColors.secondary, hex: e.target.value}})} />
-                                <Input label="CMYK" value={tempColors.secondary.cmyk} onChange={e => setTempColors({...tempColors, secondary: {...tempColors.secondary, cmyk: e.target.value}})} />
-                                <Input label="PANTONE" value={tempColors.secondary.pantone} onChange={e => setTempColors({...tempColors, secondary: {...tempColors.secondary, pantone: e.target.value}})} />
                             </div>
                         </div>
                         <Input label="Observações de Uso" multiline value={tempColors.notes} onChange={e => setTempColors({...tempColors, notes: e.target.value})} />

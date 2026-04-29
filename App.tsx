@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MemoryRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LandingLayout, DashboardLayout } from './components/Layouts';
@@ -11,6 +12,7 @@ import { JobDetailsPage } from './pages/JobDetails';
 import { TeamPage } from './pages/Team';
 import { TeamMemberDetailsPage } from './pages/TeamMemberDetails';
 import { SettingsPage } from './pages/Settings';
+import { ProductionsPage } from './pages/Productions';
 
 const App: React.FC = () => {
   return (
@@ -19,9 +21,7 @@ const App: React.FC = () => {
         <Route 
           path="/" 
           element={
-            <DashboardLayout>
-              <DashboardHome />
-            </DashboardLayout>
+            <LoginPage />
           } 
         />
         
@@ -72,6 +72,14 @@ const App: React.FC = () => {
           element={
             <DashboardLayout>
               <JobDetailsPage />
+            </DashboardLayout>
+          } 
+        />
+        <Route 
+          path="/producao" 
+          element={
+            <DashboardLayout>
+              <ProductionsPage />
             </DashboardLayout>
           } 
         />

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { 
@@ -7,7 +8,8 @@ import {
   CreditCard, 
   Settings, 
   Menu,
-  X
+  X,
+  Camera
 } from 'lucide-react';
 import { MOCK_TEAM } from '../services/mockData';
 
@@ -58,14 +60,14 @@ export const LandingLayout: React.FC<{ children: React.ReactNode }> = ({ childre
               <button 
                 key={item.label} 
                 onClick={() => handleScrollTo(item.id)}
-                className="text-gray-700 hover:text-primary transition-all duration-300 transform hover:scale-105 font-medium text-sm cursor-pointer bg-transparent border-none"
+                className="text-gray-700 hover:text-primary transition-all duration-300 font-medium text-sm cursor-pointer bg-transparent border-none"
               >
                 {item.label}
               </button>
             ))}
             <button 
                 onClick={() => navigate('/login')}
-                className="bg-black text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+                className="bg-black text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition-colors"
             >
                 Login
             </button>
@@ -86,7 +88,7 @@ export const LandingLayout: React.FC<{ children: React.ReactNode }> = ({ childre
               <button 
                 key={item.label} 
                 onClick={() => handleScrollTo(item.id)}
-                className="font-medium text-gray-900 border-b border-gray-100 pb-2 cursor-pointer text-left bg-transparent"
+                className="font-semibold text-gray-900 border-b border-gray-100 pb-2 cursor-pointer text-left bg-transparent"
               >
                 {item.label}
               </button>
@@ -125,17 +127,18 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
     { icon: Users, label: 'Clientes', path: '/clientes' },
     { icon: Users, label: 'Equipe', path: '/equipe' }, 
     { icon: Briefcase, label: 'Jobs', path: '/jobs' },
+    { icon: Camera, label: 'Produção', path: '/producao' },
     { icon: CreditCard, label: 'Financeiro', path: '/financeiro' },
     { icon: Settings, label: 'Configurações', path: '/config' },
   ];
 
   const SidebarContent = () => (
     <>
-      <div className="h-20 flex items-center px-8 border-b border-gray-900">
+      <div className="h-20 flex items-center px-8 border-b border-gray-900/50">
           <span className="text-2xl font-bold tracking-tight text-white">Dote.</span>
       </div>
       
-      <nav className="flex-1 py-6 space-y-2 px-3">
+      <nav className="flex-1 py-6 space-y-1 px-4">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/');
           const Icon = item.icon;
@@ -147,8 +150,10 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
                 navigate(item.path);
                 setIsMobileOpen(false);
               }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-left
-                ${isActive ? 'bg-primary text-white shadow-lg shadow-red-900/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white hover:pl-6'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-200 text-left
+                ${isActive 
+                  ? 'bg-primary text-white font-semibold shadow-lg shadow-red-500/10' 
+                  : 'text-gray-400 font-medium hover:bg-gray-800 hover:text-white'}`}
             >
               <Icon size={18} />
               {item.label}
@@ -157,13 +162,19 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
         })}
       </nav>
 
-      <div className="p-4 border-t border-gray-900">
+      <div className="p-5 border-t border-gray-900/50">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-white uppercase">
-            {currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+          <div className="w-10 h-10 rounded-xl overflow-hidden bg-gray-900 border border-gray-800 shadow-xl">
+            {currentUser.avatar ? (
+              <img src={currentUser.avatar} alt={currentUser.name} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-primary text-white text-xs font-bold">
+                {currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+              </div>
+            )}
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-white">{currentUser.name}</span>
+            <span className="text-sm font-semibold text-white truncate">{currentUser.name}</span>
             <span className="text-xs text-gray-500">{currentUser.role}</span>
           </div>
         </div>
@@ -180,12 +191,12 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
 
       {/* Mobile Sidebar Overlay & Drawer */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden" onClick={() => setIsMobileOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden" onClick={() => setIsMobileOpen(false)} />
       )}
       
       <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-black text-white transform transition-transform duration-300 ease-in-out md:hidden shadow-2xl flex flex-col ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
          <div className="absolute top-4 right-4">
-            <button onClick={() => setIsMobileOpen(false)} className="text-gray-400 hover:text-white">
+            <button onClick={() => setIsMobileOpen(false)} className="text-gray-400 hover:text-white p-2">
                 <X />
             </button>
          </div>
@@ -196,12 +207,12 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
       <div className="flex-1 md:ml-60 transition-all duration-300">
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 md:hidden sticky top-0 z-30 shadow-sm text-gray-900">
              <span className="text-xl font-bold">Dote.</span>
-             <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-md" onClick={() => setIsMobileOpen(true)}>
+             <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg" onClick={() => setIsMobileOpen(true)}>
                 <Menu />
              </button>
         </header>
 
-        <main className="p-4 md:p-8 w-full animate-in fade-in duration-500">
+        <main className="p-4 md:p-8 w-full max-w-none mx-auto animate-in fade-in duration-500">
           {children}
         </main>
       </div>
