@@ -1,11 +1,13 @@
+"use client";
+
 
 import React, { useState } from 'react';
 import { Save, Plus, Trash2, Calendar as CalendarIcon, Shield, Bell, Zap, Link2, AlertTriangle, ShieldCheck, Check } from 'lucide-react';
-import { Button, Input, Card, Badge, Modal, Heading, Label } from '../components/UI';
-import { MOCK_DATES, DEFAULT_PERMISSIONS } from '../services/mockData';
-import { CommemorativeDate, AccessPermissions, TeamRole } from '../types';
+import { Button, Input, Card, Badge, Modal, Heading, Label } from '../../../components/UI';
+import { MOCK_DATES, DEFAULT_PERMISSIONS } from '../../../services/mockData';
+import { CommemorativeDate, AccessPermissions, TeamRole } from '../../../types';
 
-export const SettingsPage: React.FC = () => {
+export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<'dates' | 'access' | 'integrations'>('dates');
   const [generalDates, setGeneralDates] = useState<CommemorativeDate[]>(MOCK_DATES.filter(d => !d.clientId));
   const [dropboxConnected, setDropboxConnected] = useState(true);

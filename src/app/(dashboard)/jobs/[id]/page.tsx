@@ -1,6 +1,8 @@
+"use client";
+
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
 import { 
   ArrowLeft, 
   Calendar, 
@@ -32,13 +34,13 @@ import {
   X,
   UserPlus
 } from 'lucide-react';
-import { Button, Input, Badge, Card, Modal, Heading, Label } from '../components/UI';
-import { MOCK_JOBS, MOCK_CLIENTS, MOCK_TEAM } from '../services/mockData';
-import { Job, JobStage, JobType, JobPiece, PieceStatus, JobHistoryEntry, TeamMember } from '../types';
+import { Button, Input, Badge, Card, Modal, Heading, Label } from '../../../../components/UI';
+import { MOCK_JOBS, MOCK_CLIENTS, MOCK_TEAM } from '../../../../services/mockData';
+import { Job, JobStage, JobType, JobPiece, PieceStatus, JobHistoryEntry, TeamMember } from '../../../../types';
 
-export const JobDetailsPage: React.FC = () => {
+export default function JobDetailsPage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'briefing' | 'pieces' | 'timeline'>('briefing');
@@ -124,7 +126,7 @@ export const JobDetailsPage: React.FC = () => {
 
   const confirmDeleteJob = () => {
     console.log("Job excluído:", job?.id);
-    navigate('/jobs');
+    router.push('/jobs');
   };
 
   const confirmDeletePiece = () => {
@@ -235,7 +237,7 @@ export const JobDetailsPage: React.FC = () => {
   if (!job) return (
     <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
         <h2 className="text-xl font-bold text-gray-900 uppercase">Job não encontrado</h2>
-        <Button onClick={() => navigate('/jobs')} variant="outline"><ArrowLeft size={16} className="mr-2"/> Voltar para Jobs</Button>
+        <Button onClick={() => router.push('/jobs')} variant="outline"><ArrowLeft size={16} className="mr-2"/> Voltar para Jobs</Button>
     </div>
   );
 
@@ -244,7 +246,7 @@ export const JobDetailsPage: React.FC = () => {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm mb-8 overflow-hidden">
         <div className="p-8 pb-4 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="flex items-center gap-6">
-            <button onClick={() => navigate('/jobs')} className="p-3 rounded-xl bg-gray-50 text-gray-400 hover:text-primary hover:bg-red-50 transition-all border border-gray-100 shadow-sm">
+            <button onClick={() => router.push('/jobs')} className="p-3 rounded-xl bg-gray-50 text-gray-400 hover:text-primary hover:bg-red-50 transition-all border border-gray-100 shadow-sm">
               <ArrowLeft size={20} />
             </button>
             <div className="space-y-1">

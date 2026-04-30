@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, 
   Users, 
@@ -15,7 +15,7 @@ import { MOCK_TEAM } from '../services/mockData';
 
 // --- LANDING PAGE LAYOUT ---
 export const LandingLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const navLinks = [
@@ -46,7 +46,7 @@ export const LandingLayout: React.FC<{ children: React.ReactNode }> = ({ childre
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           <button 
             onClick={() => {
-              navigate('/landing');
+              router.push('/landing');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="text-2xl font-bold text-black tracking-tight bg-transparent border-none p-0 cursor-pointer hover:opacity-80 transition-opacity" 
@@ -66,7 +66,7 @@ export const LandingLayout: React.FC<{ children: React.ReactNode }> = ({ childre
               </button>
             ))}
             <button 
-                onClick={() => navigate('/login')}
+                onClick={() => router.push('/login')}
                 className="bg-black text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition-colors"
             >
                 Login
@@ -95,7 +95,7 @@ export const LandingLayout: React.FC<{ children: React.ReactNode }> = ({ childre
             ))}
             <button 
                 onClick={() => {
-                  navigate('/login');
+                  router.push('/login');
                   setMobileMenuOpen(false);
                 }} 
                 className="text-primary font-bold pt-2 text-left" 
@@ -115,8 +115,8 @@ export const LandingLayout: React.FC<{ children: React.ReactNode }> = ({ childre
 
 // --- DASHBOARD LAYOUT ---
 export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
   // Use mock user for consistency
@@ -140,14 +140,14 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
       
       <nav className="flex-1 py-6 space-y-1 px-4">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/');
+          const isActive = pathname === item.path || (item.path === '/dashboard' && pathname === '/');
           const Icon = item.icon;
           
           return (
             <button 
               key={item.path} 
               onClick={() => {
-                navigate(item.path);
+                router.push(item.path);
                 setIsMobileOpen(false);
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-200 text-left

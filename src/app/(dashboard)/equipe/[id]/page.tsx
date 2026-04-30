@@ -1,18 +1,20 @@
+"use client";
+
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
 import { 
   ArrowLeft, Mail, Phone, Calendar, Briefcase, Award, 
   CheckCircle2, Clock, Trash2, Edit3, ChevronRight, 
   Target, TrendingUp, Layout, FileText, User, Hash, Lock, ShieldCheck, Settings, Users, DollarSign, LayoutDashboard, Check
 } from 'lucide-react';
-import { Button, Badge, Card, Modal, Input, Heading, Label } from '../components/UI';
-import { MOCK_TEAM, MOCK_JOBS, DEFAULT_PERMISSIONS } from '../services/mockData';
-import { TeamMember, Job, TeamRole, AccessPermissions } from '../types';
+import { Button, Badge, Card, Modal, Input, Heading, Label } from '../../../../components/UI';
+import { MOCK_TEAM, MOCK_JOBS, DEFAULT_PERMISSIONS } from '../../../../services/mockData';
+import { TeamMember, Job, TeamRole, AccessPermissions } from '../../../../types';
 
-export const TeamMemberDetailsPage: React.FC = () => {
+export default function TeamMemberDetailsPage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [member, setMember] = useState<TeamMember | null>(null);
   const [activeJobs, setActiveJobs] = useState<Job[]>([]);
   
@@ -108,7 +110,7 @@ export const TeamMemberDetailsPage: React.FC = () => {
           <div className="flex-1 text-center md:text-left space-y-4">
              <div className="space-y-1">
                 <div className="flex items-center justify-center md:justify-start gap-3">
-                    <button onClick={() => navigate('/equipe')} className="p-2 rounded-lg bg-gray-50 text-gray-400 hover:text-primary transition-all"><ArrowLeft size={16} /></button>
+                    <button onClick={() => router.push('/equipe')} className="p-2 rounded-lg bg-gray-50 text-gray-400 hover:text-primary transition-all"><ArrowLeft size={16} /></button>
                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Perfil do Colaborador</span>
                 </div>
                 <h1 className="text-5xl font-black text-gray-900 uppercase tracking-tighter leading-none">{member.name}</h1>
@@ -196,7 +198,7 @@ export const TeamMemberDetailsPage: React.FC = () => {
 
                 <div className="space-y-4">
                     {activeJobs.map(job => (
-                        <div key={job.id} onClick={() => navigate(`/jobs/${job.id}`)} className="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 group cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all">
+                        <div key={job.id} onClick={() => router.push(`/jobs/${job.id}`)} className="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 group cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all">
                             <div className="flex items-center gap-4">
                                 <div className="p-3 bg-white rounded-xl shadow-sm text-primary">{job.type === 'Digital' ? <Layout size={20}/> : <FileText size={20}/>}</div>
                                 <div>

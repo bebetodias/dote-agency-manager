@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { 
   Plus, 
   Building2, 
@@ -17,12 +19,12 @@ import {
   MoreHorizontal,
   AlertTriangle
 } from 'lucide-react';
-import { Button, Input, Modal, Badge, Heading, Label, SearchInput, Card } from '../components/UI';
-import { MOCK_CLIENTS } from '../services/mockData';
-import { Client, ClientPlan } from '../types';
+import { Button, Input, Modal, Badge, Heading, Label, SearchInput, Card } from '../../../components/UI';
+import { MOCK_CLIENTS } from '../../../services/mockData';
+import { Client, ClientPlan } from '../../../types';
 
-export const ClientsPage: React.FC = () => {
-  const navigate = useNavigate();
+export default function ClientsPage() {
+  const router = useRouter();
   const [clients, setClients] = useState<Client[]>(MOCK_CLIENTS);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -131,7 +133,7 @@ export const ClientsPage: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {filteredClients.map((client) => (
-                <tr key={client.id} className="hover:bg-gray-50/50 transition-colors group cursor-pointer" onClick={() => navigate(`/clientes/${client.id}`)}>
+                <tr key={client.id} className="hover:bg-gray-50/50 transition-colors group cursor-pointer" onClick={() => router.push(`/clientes/${client.id}`)}>
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-gray-900 text-white flex items-center justify-center font-black text-xs border-4 border-white shadow-xl">
@@ -162,7 +164,7 @@ export const ClientsPage: React.FC = () => {
                     </button>
                     {activeActionId === client.id && (
                         <div className="absolute right-12 top-14 w-48 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden animate-in zoom-in-95">
-                            <button onClick={(e) => { e.stopPropagation(); navigate(`/clientes/${client.id}`); }} className="w-full text-left px-5 py-4 text-xs font-black uppercase tracking-widest text-gray-700 hover:bg-gray-50 flex items-center gap-3">
+                            <button onClick={(e) => { e.stopPropagation(); router.push(`/clientes/${client.id}`); }} className="w-full text-left px-5 py-4 text-xs font-black uppercase tracking-widest text-gray-700 hover:bg-gray-50 flex items-center gap-3">
                                 <Eye size={16} /> Ver Brandbook
                             </button>
                             <button onClick={(e) => { e.stopPropagation(); setClientToDelete(client); }} className="w-full text-left px-5 py-4 text-xs font-black uppercase tracking-widest text-red-600 hover:bg-red-50 flex items-center gap-3 border-t border-gray-50">

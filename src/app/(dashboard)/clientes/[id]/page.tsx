@@ -1,6 +1,8 @@
+"use client";
+
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
 import { 
   ArrowLeft, Trash2, Save, Building2, Globe, Mail, Phone, FileText, 
   User, ExternalLink, Plus, Calendar as CalendarIcon, 
@@ -8,13 +10,13 @@ import {
   Facebook, Linkedin, Music, MapPin, Hash, Check, Layout, Briefcase, 
   Target, Zap, AlertCircle, Edit3, Upload, X, Globe2, MoreHorizontal
 } from 'lucide-react';
-import { Button, Input, Badge, Card, Modal } from '../components/UI';
-import { MOCK_CLIENTS, MOCK_DATES } from '../services/mockData';
-import { Client, ClientPersona, ClientContact, SocialPlatformMetric, CommemorativeDate } from '../types';
+import { Button, Input, Badge, Card, Modal } from '../../../../components/UI';
+import { MOCK_CLIENTS, MOCK_DATES } from '../../../../services/mockData';
+import { Client, ClientPersona, ClientContact, SocialPlatformMetric, CommemorativeDate } from '../../../../types';
 
-export const ClientDetailsPage: React.FC = () => {
+export default function ClientDetailsPage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [client, setClient] = useState<Client | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('data');
@@ -41,7 +43,7 @@ export const ClientDetailsPage: React.FC = () => {
   if (!client) return (
     <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
         <h2 className="text-xl font-bold text-gray-900">Cliente não encontrado</h2>
-        <Button onClick={() => navigate('/clientes')} variant="outline"><ArrowLeft size={16} className="mr-2"/> Voltar</Button>
+        <Button onClick={() => router.push('/clientes')} variant="outline"><ArrowLeft size={16} className="mr-2"/> Voltar</Button>
     </div>
   );
 
@@ -96,7 +98,7 @@ export const ClientDetailsPage: React.FC = () => {
 
             <div className="flex flex-col gap-2 shrink-0 w-full md:w-auto">
                 <Button onClick={() => console.log('Saving...')} className="gap-2 w-full"><Save size={18}/> Salvar Perfil</Button>
-                <Button variant="outline" onClick={() => navigate('/clientes')} className="w-full"><ArrowLeft size={18} className="mr-2"/> Voltar</Button>
+                <Button variant="outline" onClick={() => router.push('/clientes')} className="w-full"><ArrowLeft size={18} className="mr-2"/> Voltar</Button>
             </div>
         </div>
       </div>

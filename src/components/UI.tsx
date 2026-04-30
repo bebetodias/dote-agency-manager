@@ -5,7 +5,7 @@ import { X, Search } from 'lucide-react';
 // --- TYPOGRAPHY HELPERS ---
 export const Heading = ({ children, className = "", level = 1 }: { children?: React.ReactNode, className?: string, level?: 1 | 2 | 3 }) => {
   const styles = {
-    1: "text-3xl md:text-4xl font-bold tracking-tight text-gray-900 leading-tight",
+    1: "text-2xl md:text-3xl font-bold tracking-tight text-gray-900 leading-tight",
     2: "text-xl md:text-2xl font-semibold tracking-tight text-gray-900 leading-tight",
     3: "text-lg font-semibold tracking-tight text-gray-900"
   };
@@ -25,15 +25,15 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
-export const Button: React.FC<ButtonProps> = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
-  className = '', 
-  ...props 
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  variant = 'primary',
+  size = 'md',
+  className = '',
+  ...props
 }) => {
   const baseStyles = "inline-flex items-center justify-center font-semibold transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 active:scale-95";
-  
+
   const variants = {
     primary: "bg-primary text-white hover:bg-primaryDark shadow-lg shadow-red-500/10",
     ghost: "hover:bg-gray-100 text-gray-500 hover:text-gray-900",
@@ -50,8 +50,8 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <button 
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`} 
+    <button
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
       {...props}
     >
       {children}
@@ -68,7 +68,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTe
 
 export const Input: React.FC<InputProps> = ({ label, icon: Icon, multiline, className = '', ...props }) => {
   const inputStyles = `flex w-full rounded-md border border-gray-200 bg-gray-50/30 text-gray-900 px-6 py-3 text-sm font-normal ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary/20 transition-all disabled:cursor-not-allowed disabled:opacity-50 ${Icon ? 'pl-14' : ''} ${className}`;
-  
+
   return (
     <div className="space-y-1 w-full">
       {label && <Label>{label}</Label>}
@@ -79,9 +79,9 @@ export const Input: React.FC<InputProps> = ({ label, icon: Icon, multiline, clas
           </div>
         )}
         {multiline ? (
-          <textarea 
-            className={`${inputStyles} min-h-[120px] py-5`} 
-            {...props as React.TextareaHTMLAttributes<HTMLTextAreaElement>} 
+          <textarea
+            className={`${inputStyles} min-h-[120px] py-5`}
+            {...props as React.TextareaHTMLAttributes<HTMLTextAreaElement>}
           />
         ) : (
           <input
@@ -98,7 +98,7 @@ export const Input: React.FC<InputProps> = ({ label, icon: Icon, multiline, clas
 export const SearchInput: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (props) => (
   <div className="relative w-full">
     <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-    <input 
+    <input
       {...props}
       className="w-full h-14 pl-14 pr-6 bg-white rounded-md border border-gray-200 text-sm font-normal focus:border-primary outline-none transition-all shadow-sm"
     />
@@ -107,7 +107,7 @@ export const SearchInput: React.FC<React.InputHTMLAttributes<HTMLInputElement>> 
 
 // --- CARD ---
 export const Card: React.FC<{ children?: React.ReactNode; className?: string; onClick?: () => void }> = ({ children, className = '', onClick }) => (
-  <div 
+  <div
     onClick={onClick}
     className={`rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm transition-all overflow-hidden ${onClick ? 'cursor-pointer hover:shadow-xl hover:border-primary/20' : ''} ${className}`}
   >
@@ -152,26 +152,26 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
 
 // --- BADGE ---
 interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-    children?: React.ReactNode;
-    variant?: 'default' | 'outline' | 'red' | 'green' | 'blue' | 'orange';
-    className?: string;
+  children?: React.ReactNode;
+  variant?: 'default' | 'outline' | 'red' | 'green' | 'blue' | 'orange';
+  className?: string;
 }
 
 export const Badge: React.FC<BadgeProps> = ({ children, variant = 'default', className = '', ...props }) => {
-    const styles = {
-        default: "bg-gray-900 text-white border-transparent",
-        outline: "text-gray-500 border-gray-200 bg-white",
-        red: "bg-red-50 text-red-600 border-red-100",
-        green: "bg-green-50 text-green-600 border-green-100",
-        blue: "bg-blue-50 text-blue-600 border-blue-100",
-        orange: "bg-orange-50 text-orange-600 border-orange-100"
-    };
-    return (
-        <div 
-            className={`inline-flex items-center rounded-md border px-3 py-1.5 text-[11px] font-medium transition-colors ${styles[variant]} ${className}`}
-            {...props}
-        >
-            {children}
-        </div>
-    );
+  const styles = {
+    default: "bg-gray-900 text-white border-transparent",
+    outline: "text-gray-500 border-gray-200 bg-white",
+    red: "bg-red-50 text-red-600 border-red-100",
+    green: "bg-green-50 text-green-600 border-green-100",
+    blue: "bg-blue-50 text-blue-600 border-blue-100",
+    orange: "bg-orange-50 text-orange-600 border-orange-100"
+  };
+  return (
+    <div
+      className={`inline-flex items-center rounded-md border px-3 py-1.5 text-[11px] font-medium transition-colors ${styles[variant]} ${className}`}
+      {...props}
+    >
+      {children}
+    </div>
+  );
 };

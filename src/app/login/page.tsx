@@ -1,25 +1,37 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Loader2, PenTool } from 'lucide-react';
-import { Button } from '../components/UI';
+"use client";
 
-export const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import { Mail, Lock, ArrowRight, Loader2, PenTool } from 'lucide-react';
+
+export default function LoginPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
 
-    // Simulação de autenticação com delay para feedback visual
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/dashboard');
-    }, 1200);
+    const res = await signIn('credentials', {
+      redirect: false,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    setIsLoading(false);
+
+    if (res?.error) {
+      setError('Email ou senha inválidos.');
+    } else {
+      router.push('/dashboard');
+    }
   };
 
   return (
@@ -68,20 +80,25 @@ export const LoginPage: React.FC = () => {
 
           {/* Formulário de Login */}
           <form onSubmit={handleSubmit} className="space-y-8">
+            {error && (
+              <div className="bg-red-50 text-red-500 p-3 rounded-lg text-sm font-semibold text-center">
+                {error}
+              </div>
+            )}
             {/* Campo Email */}
             <div className="space-y-3">
               <label className="block text-[#1b0e0e] text-xs font-medium uppercase tracking-[0.15em]" htmlFor="email">
                 Email
               </label>
               <div className="relative group">
-                <input 
+                <input
                   id="email"
                   className="flex w-full rounded-2xl border-2 border-gray-50 bg-[#f9fafb] text-gray-900 px-6 py-5 pl-14 text-sm font-bold focus:outline-none focus:border-[#DC2626] focus:bg-white transition-all duration-300 placeholder:text-gray-300 shadow-sm group-hover:border-gray-100"
-                  placeholder="exemplo@dote.com.br" 
+                  placeholder="exemplo@dote.com.br"
                   type="email"
                   required
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
                 <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-gray-300 group-focus-within:text-[#DC2626] transition-colors">
                   <Mail size={20} />
@@ -100,14 +117,14 @@ export const LoginPage: React.FC = () => {
                 </button>
               </div>
               <div className="relative group">
-                <input 
+                <input
                   id="password"
                   className="flex w-full rounded-2xl border-2 border-gray-50 bg-[#f9fafb] text-gray-900 px-6 py-5 pl-14 text-sm font-bold focus:outline-none focus:border-[#DC2626] focus:bg-white transition-all duration-300 placeholder:text-gray-300 shadow-sm group-hover:border-gray-100"
-                  placeholder="••••••••" 
+                  placeholder="••••••••"
                   type="password"
                   required
                   value={formData.password}
-                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
                 <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-gray-300 group-focus-within:text-[#DC2626] transition-colors">
                   <Lock size={20} />
@@ -116,8 +133,8 @@ export const LoginPage: React.FC = () => {
             </div>
 
             {/* Botão de Ação Principal */}
-            <button 
-              className="w-full h-[72px] bg-[#DC2626] hover:bg-[#B91C1C] text-white text-sm font-black uppercase tracking-[0.25em] rounded-2xl shadow-2xl shadow-red-500/20 hover:shadow-red-500/40 transition-all duration-300 transform active:scale-[0.97] flex items-center justify-center gap-4 group" 
+            <button
+              className="w-full h-[72px] bg-[#DC2626] hover:bg-[#B91C1C] text-white text-sm font-black uppercase tracking-[0.25em] rounded-2xl shadow-2xl shadow-red-500/20 hover:shadow-red-500/40 transition-all duration-300 transform active:scale-[0.97] flex items-center justify-center gap-4 group"
               type="submit"
               disabled={isLoading}
             >
@@ -136,8 +153,9 @@ export const LoginPage: React.FC = () => {
           <div className="mt-14 text-center">
             <p className="text-gray-400 text-xs font-medium tracking-widest">
               Não tem uma conta?{' '}
-              <button 
-                onClick={() => navigate('/landing')}
+              <button
+                type="button"
+                onClick={() => router.push('/landing')}
                 className="font-bold text-[#1b0e0e] hover:text-[#DC2626] transition-colors border-b-2 border-transparent hover:border-[#DC2626]"
               >
                 Cadastre-se
@@ -146,7 +164,7 @@ export const LoginPage: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Overlay de Textura Sutil (Background) */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] -z-10" />
     </div>

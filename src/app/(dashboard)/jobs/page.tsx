@@ -1,6 +1,8 @@
+"use client";
+
 
 import React, { useState, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { 
   Plus, 
   Calendar, 
@@ -9,15 +11,15 @@ import {
   Clock, 
   Layers
 } from 'lucide-react';
-import { Button, Input, Modal, Badge, Heading, Label, Card } from '../components/UI';
-import { MOCK_JOBS, MOCK_CLIENTS, MOCK_TEAM } from '../services/mockData';
-import { Job, JobStage, JobType } from '../types';
+import { Button, Input, Modal, Badge, Heading, Label, Card } from '../../../components/UI';
+import { MOCK_JOBS, MOCK_CLIENTS, MOCK_TEAM } from '../../../services/mockData';
+import { Job, JobStage, JobType } from '../../../types';
 
 const STAGES = Object.values(JobStage);
 type ViewMode = 'my-jobs' | 'by-stage' | 'by-assignee' | 'timeline';
 
-export const JobsPage: React.FC = () => {
-  const navigate = useNavigate();
+export default function JobsPage() {
+  const router = useRouter();
   const [viewMode, setViewMode] = useState<ViewMode>('my-jobs');
   const [jobs, setJobs] = useState<Job[]>(MOCK_JOBS);
   const [isNewJobOpen, setIsNewJobOpen] = useState(false);
@@ -72,7 +74,7 @@ export const JobsPage: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {myJobs.map(job => (
-                <tr key={job.id} className="hover:bg-gray-50/80 cursor-pointer group transition-colors" onClick={() => navigate(`/jobs/${job.id}`)}>
+                <tr key={job.id} className="hover:bg-gray-50/80 cursor-pointer group transition-colors" onClick={() => router.push(`/jobs/${job.id}`)}>
                   <td className="px-10 py-5">
                     <div className="flex flex-col">
                       <span className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">{job.title}</span>
@@ -131,7 +133,7 @@ export const JobsPage: React.FC = () => {
               {colJobs.map((job) => {
                 const assignee = MOCK_TEAM.find(t => t.id === job.assigneeId);
                 return (
-                  <div key={job.id} draggable onDragStart={(e) => handleDragStart(e, job.id)} onDragEnd={handleDragEnd} onClick={() => navigate(`/jobs/${job.id}`)} className="p-5 rounded-2xl border border-gray-100 shadow-sm cursor-grab active:cursor-grabbing hover:shadow-xl hover:border-primary/10 transition-all group bg-white">
+                  <div key={job.id} draggable onDragStart={(e) => handleDragStart(e, job.id)} onDragEnd={handleDragEnd} onClick={() => router.push(`/jobs/${job.id}`)} className="p-5 rounded-2xl border border-gray-100 shadow-sm cursor-grab active:cursor-grabbing hover:shadow-xl hover:border-primary/10 transition-all group bg-white">
                      <span className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2 block">{job.clientName}</span>
                      <h4 className="text-[13px] font-semibold mb-4 leading-tight group-hover:text-primary transition-colors text-gray-900">{job.title}</h4>
                      <div className="flex items-center justify-between border-t border-gray-50 pt-4">

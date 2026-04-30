@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// In the future, change this to "postgresql"
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          String    // 'Designer', 'Creator', 'Atendimento', 'Videomaker', 'Gestor', 'Financeiro'
+  status        String    @default("Ativo") // 'Ativo', 'Inativo', 'Férias'
+  avatar        String?
+  phone         String?
+  joinedDate    DateTime  @default(now())
+  bio           String?
+  
+  // Relations
+  assignedJobs  Job[]     @relation("JobAssignee")
+  pieces        Piece[]   @relation("PieceAssignees")
+  productions   Production[] @relation("ProductionMembers")
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Client {
+  id                 String    @id @default(cuid())
+  name               String
+  logo               String?
+  plan               String    // 'Por Job', 'FEE (Mensal)'
+  status             String    @default("Ativo") // 'Ativo', 'Inativo', 'Onboarding'
+  lastInteraction    DateTime?
+  cnpj               String?
+  email              String?
+  phone              String?
+  
+  // Relations
+  jobs               Job[]
+  commemorativeDates CommemorativeDate[]
+
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model Job {
+  id          String    @id @default(cuid())
+  title       String
+  clientId    String
+  client      Client    @relation(fields: [clientId], references: [id])
+  type        String    // 'Offline', 'Digital'
+  stage       String    // 'Briefing', 'Pesquisa e conteúdo', etc
+  assigneeId  String
+  assignee    User      @relation("JobAssignee", fields: [assigneeId], references: [id])
+  deadline    DateTime
+  description String?
+
+  // Relations
+  pieces      Piece[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Piece {
+  id          String    @id @default(cuid())
+  name        String
+  jobId       String
+  job         Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  type        String    // 'Offline', 'Digital'
+  format      String
+  content     String?
+  status      String    @default("Pendente") // 'Pendente', 'Concluído', 'Aprovado', 'Refação'
+
+  assignees   User[]    @relation("PieceAssignees")
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Production {
+  id          String    @id @default(cuid())
+  name        String
+  location    String
+  date        DateTime
+  startTime   String
+  endTime     String
+  status      String    @default("Confirmada") // 'Confirmada', 'Em Planejamento', 'Concluída', 'Cancelada'
+
+  members     User[]    @relation("ProductionMembers")
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model CommemorativeDate {
+  id          String    @id @default(cuid())
+  name        String
+  day         Int
+  month       Int
+  clientId    String?
+  client      Client?   @relation(fields: [clientId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

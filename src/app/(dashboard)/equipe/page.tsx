@@ -1,13 +1,15 @@
+"use client";
+
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Mail, UserPlus, Search, Phone, ChevronRight, User, Briefcase, Hash, FileText, Camera, Lock } from 'lucide-react';
-import { Card, Button, Badge, Heading, Label, SearchInput, Modal, Input } from '../components/UI';
-import { MOCK_TEAM, DEFAULT_PERMISSIONS } from '../services/mockData';
-import { TeamRole, TeamMember } from '../types';
+import { Card, Button, Badge, Heading, Label, SearchInput, Modal, Input } from '../../../components/UI';
+import { MOCK_TEAM, DEFAULT_PERMISSIONS } from '../../../services/mockData';
+import { TeamRole, TeamMember } from '../../../types';
 
-export const TeamPage: React.FC = () => {
-  const navigate = useNavigate();
+export default function TeamPage() {
+  const router = useRouter();
   const [team, setTeam] = useState<TeamMember[]>(MOCK_TEAM);
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('all');
@@ -86,7 +88,7 @@ export const TeamPage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredTeam.map((member) => (
-            <Card key={member.id} onClick={() => navigate(`/equipe/${member.id}`)} className="p-0 border-none shadow-xl bg-white group overflow-hidden">
+            <Card key={member.id} onClick={() => router.push(`/equipe/${member.id}`)} className="p-0 border-none shadow-xl bg-white group overflow-hidden">
                 <div className="p-10 flex flex-col items-center text-center">
                     <div className="relative mb-8">
                         <div className="w-32 h-32 rounded-[3rem] bg-gray-100 flex items-center justify-center overflow-hidden border-8 border-white shadow-2xl transition-all duration-500 group-hover:scale-105 group-hover:rotate-3">

@@ -1,10 +1,12 @@
+"use client";
+
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { ArrowRight, CheckCircle, Zap, TrendingUp } from 'lucide-react';
 import { Badge } from '../components/UI';
 
-export const LandingPage: React.FC = () => {
-  const navigate = useNavigate();
+export default function LandingPage() {
+  const router = useRouter();
 
   return (
     <div className="flex flex-col">
@@ -20,7 +22,7 @@ export const LandingPage: React.FC = () => {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button 
-              onClick={() => navigate('/login')} 
+              onClick={() => router.push('/login')} 
               className="bg-primary text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-primaryDark transition-all shadow-lg hover:shadow-red-500/30 flex items-center gap-2"
             >
                 Comece seu Projeto <ArrowRight size={20} />

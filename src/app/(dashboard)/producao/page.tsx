@@ -1,3 +1,5 @@
+"use client";
+
 
 import React, { useState, useMemo } from 'react';
 import { 
@@ -14,11 +16,11 @@ import {
   Search,
   UserPlus
 } from 'lucide-react';
-import { Card, Button, Badge, Heading, Label, Modal, Input } from '../components/UI';
-import { MOCK_PRODUCTIONS, MOCK_TEAM } from '../services/mockData';
-import { Production, Equipment } from '../types';
+import { Card, Button, Badge, Heading, Label, Modal, Input } from '../../../components/UI';
+import { MOCK_PRODUCTIONS, MOCK_TEAM } from '../../../services/mockData';
+import { Production, Equipment } from '../../../types';
 
-export const ProductionsPage: React.FC = () => {
+export default function ProductionsPage() {
   const [productions, setProductions] = useState<Production[]>(MOCK_PRODUCTIONS);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduction, setEditingProduction] = useState<Production | null>(null);
